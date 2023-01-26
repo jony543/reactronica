@@ -93,18 +93,13 @@ const TrackConsumer: React.FC<TrackConsumerProps> = ({
     if (isPlaying) {
       sequencer.current = new Tone.Sequence(
         (time, step) => {
-          console.log(
-            'sequencer step',
-            step,
-            time.toSeconds(),
-            time.toBarsBeatsSixteenths(),
-          );
+          console.log('sequencer step', step, time);
           step.notes.forEach((note) => {
             instrumentsRef.current.forEach((instrument) => {
               instrument.triggerAttackRelease(
                 note.name,
                 note.duration || 0.5,
-                undefined,
+                time,
                 note.velocity,
               );
             });
