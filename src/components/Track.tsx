@@ -11,6 +11,7 @@ export interface StepNoteType {
   name: MidiNote;
   duration?: number | string;
   velocity?: number;
+  offset?: number;
 }
 
 export type StepType =
@@ -93,13 +94,12 @@ const TrackConsumer: React.FC<TrackConsumerProps> = ({
     if (isPlaying) {
       sequencer.current = new Tone.Sequence(
         (time, step) => {
-          console.log('sequencer step', step, time);
           step.notes.forEach((note) => {
             instrumentsRef.current.forEach((instrument) => {
               instrument.triggerAttackRelease(
                 note.name,
                 note.duration || 0.5,
-                time,
+                time + (note.offset || 0),
                 note.velocity,
               );
             });
